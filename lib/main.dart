@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: AppBloc.getAllProviders(),
         child: MaterialApp(
-          title: 'News App',
+          title: 'News',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),

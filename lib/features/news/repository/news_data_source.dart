@@ -21,7 +21,6 @@ class NewsDataSourceImpl implements NewsDataSource {
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       final newsResponse = GetNewsResponseModel.fromJson(jsonResponse);
-      print(newsResponse);
       return Left(newsResponse);
     } else if (response.statusCode == 429) {
       print('API limit exceeded. Please try again later.');

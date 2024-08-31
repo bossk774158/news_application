@@ -47,11 +47,11 @@ class _NewsPageState extends State<NewsPage> {
       },
       builder: (BuildContext context, NewsState state) {
         if (state is NewsLoadingState) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (state is SuccessGetNewsState) {
           return NewsList(newsList: state.entity.articles);
         } else if (state is ErrorGetNewsState) {
-          return Center(child: Text('Failed to load news'));
+          return const Center(child: Text('Failed to load news'));
         } else {
           return Container();
         }
@@ -62,7 +62,7 @@ class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('News App')),
+      appBar: AppBar(title: Text('News')),
       body: renderNews(),
     );
   }

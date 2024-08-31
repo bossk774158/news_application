@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_application/features/news/presentation/pages/full_article_page.dart';
+import 'package:news_application/features/news/presentation/widgets/news_card.dart';
 import 'package:news_application/features/news/repository/news_model.dart';
 
 class NewsList extends StatelessWidget {
@@ -9,25 +9,20 @@ class NewsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: newsList.length,
-      itemBuilder: (context, index) {
-        final news = newsList[index];
-        return ListTile(
-          leading: Image.network(news.urlToImage ?? '', fit: BoxFit.cover),
-          title: Text(news.title),
-          subtitle: Text(news.description ?? 'description'),
-          trailing: Text(news.publishedAt.toLocal().toString()),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => FullArticlePage(news: news),
-              ),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: newsList.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: NewsCard(news: newsList[index]),
             );
           },
-        );
-      },
+        ),
+      ),
     );
   }
 }
