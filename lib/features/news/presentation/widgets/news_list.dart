@@ -17,8 +17,12 @@ class NewsList extends StatelessWidget {
           itemCount: newsList.length,
           itemBuilder: (context, index) {
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: NewsCard(newsList: newsList, currentIndex: index),
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: NewsCard(
+                newsList: newsList,
+                currentIndex: index,
+                isSaved: false,
+              ),
             );
           },
         ),

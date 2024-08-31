@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:news_application/features/news/presentation/widgets/news_card.dart';
 import 'package:news_application/features/news/repository/news_model.dart';
 import 'package:news_application/features/news/presentation/pages/full_article_page.dart';
 
@@ -50,26 +51,30 @@ class _SavedArticlesPageState extends State<SavedArticlesPage> with RouteAware {
             return ListView.builder(
               itemCount: savedArticles.length,
               itemBuilder: (context, index) {
-                final article = savedArticles[index];
-                return ListTile(
-                  title: Text(article.title),
-                  subtitle: Text(article.sourceName ?? "Source Name"),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FullArticlePage(
-                          newsList: savedArticles,
-                          currentIndex: index,
-                        ),
+                return Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FullArticlePage(
+                              newsList: savedArticles,
+                              currentIndex: index,
+                            ),
+                          ),
+                        ).then((_) {
+                          setState(() {
+                            _savedArticlesFuture = _getSavedArticles();
+                          });
+                        });
+                      },
+                      child: NewsCard(
+                        newsList: savedArticles,
+                        currentIndex: index,
+                        isSaved: true,
                       ),
-                    ).then((_) {
-                      setState(() {
-                        _savedArticlesFuture = _getSavedArticles();
-                      });
-                    });
-                  },
-                );
+                    ));
               },
             );
           }
