@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/news/business_logic/news_bloc.dart';
 import 'package:news_application/features/news/business_logic/news_event.dart';
 import 'package:news_application/features/news/business_logic/news_state.dart';
+import 'package:news_application/features/news/presentation/pages/saved_article_page.dart';
 import 'package:news_application/features/news/presentation/widgets/news_list.dart';
 
 class NewsPage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _NewsPageState extends State<NewsPage> {
         if (state is NewsLoadingState) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is SuccessGetNewsState) {
-          return NewsList(newsList: state.entity.articles);
+          return NewsList(newsList: state.entity.results);
         } else if (state is ErrorGetNewsState) {
           return const Center(child: Text('Failed to load news'));
         } else {
@@ -62,7 +63,22 @@ class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('News')),
+      appBar: AppBar(
+        title: Text('News App'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.bookmarks),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SavedArticlesPage(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: renderNews(),
     );
   }

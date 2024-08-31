@@ -1,73 +1,134 @@
 import 'dart:convert';
+import 'package:hive/hive.dart';
 
-class NewsSource {
-  final String? id;
-  final String name;
+part 'news_model.g.dart';
 
-  NewsSource({
-    this.id,
-    required this.name,
-  });
-
-  factory NewsSource.fromJson(Map<String, dynamic> json) {
-    return NewsSource(
-      id: json['id'],
-      name: json['name'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-    };
-  }
-}
-
+@HiveType(typeId: 1)
 class NewsModel {
-  final NewsSource source;
-  final String? author;
+  @HiveField(0)
+  final String articleId;
+
+  @HiveField(1)
   final String title;
-  final String? description;
-  final String url;
-  final String? urlToImage;
-  final DateTime publishedAt;
-  final String? content;
+
+  @HiveField(2)
+  final String link;
+
+  @HiveField(3)
+  final List<String>? keywords;
+
+  @HiveField(4)
+  final List<String>? creator;
+
+  @HiveField(5)
+  final String? videoUrl;
+
+  @HiveField(6)
+  final String description;
+
+  @HiveField(7)
+  final String content;
+
+  @HiveField(8)
+  final DateTime pubDate;
+
+  @HiveField(9)
+  final String? imageUrl;
+
+  @HiveField(10)
+  final String? sourceId;
+
+  @HiveField(11)
+  final String? sourceName;
+
+  @HiveField(12)
+  final String? sourceUrl;
+
+  @HiveField(13)
+  final int? sourcePriority;
+
+  @HiveField(14)
+  final String? sourceIcon;
+
+  @HiveField(15)
+  final String language;
+
+  @HiveField(16)
+  final List<String> country;
+
+  @HiveField(17)
+  final List<String> category;
+
+  @HiveField(18)
+  final bool duplicate;
 
   NewsModel({
-    required this.source,
-    this.author,
+    required this.articleId,
     required this.title,
-    this.description,
-    required this.url,
-    this.urlToImage,
-    required this.publishedAt,
-    this.content,
+    required this.link,
+    this.keywords,
+    this.creator,
+    this.videoUrl,
+    required this.description,
+    required this.content,
+    required this.pubDate,
+    this.imageUrl,
+    this.sourceId,
+    this.sourceName,
+    this.sourceUrl,
+    this.sourcePriority,
+    this.sourceIcon,
+    required this.language,
+    required this.country,
+    required this.category,
+    required this.duplicate,
   });
 
   factory NewsModel.fromJson(Map<String, dynamic> json) {
     return NewsModel(
-      source: NewsSource.fromJson(json['source']),
-      author: json['author'],
-      title: json['title'],
-      description: json['description'],
-      url: json['url'],
-      urlToImage: json['urlToImage'],
-      publishedAt: DateTime.parse(json['publishedAt']),
-      content: json['content'],
+      articleId: json['article_id'] as String,
+      title: json['title'] as String,
+      link: json['link'] as String,
+      keywords: (json['keywords'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      creator: (json['creator'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      videoUrl: json['video_url'] as String?,
+      description: json['description'] as String,
+      content: json['content'] as String,
+      pubDate: DateTime.parse(json['pubDate']),
+      imageUrl: json['image_url'] as String?,
+      sourceId: json['source_id'] as String?,
+      sourceName: json['source_name'] as String?,
+      sourceUrl: json['source_url'] as String?,
+      sourcePriority: json['source_priority'] as int?,
+      sourceIcon: json['source_icon'] as String?,
+      language: json['language'] as String,
+      country: (json['country'] as List<dynamic>).map((e) => e as String).toList(),
+      category: (json['category'] as List<dynamic>).map((e) => e as String).toList(),
+      duplicate: json['duplicate'] as bool,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'source': source.toJson(),
-      'author': author,
+      'article_id': articleId,
       'title': title,
+      'link': link,
+      'keywords': keywords,
+      'creator': creator,
+      'video_url': videoUrl,
       'description': description,
-      'url': url,
-      'urlToImage': urlToImage,
-      'publishedAt': publishedAt.toIso8601String(),
       'content': content,
+      'pubDate': pubDate.toIso8601String(),
+      'image_url': imageUrl,
+      'source_id': sourceId,
+      'source_name': sourceName,
+      'source_url': sourceUrl,
+      'source_priority': sourcePriority,
+      'source_icon': sourceIcon,
+      'language': language,
+      'country': country,
+      'category': category,
+      'duplicate': duplicate,
     };
   }
 }
@@ -75,19 +136,23 @@ class NewsModel {
 class GetNewsResponseEntity {
   final String status;
   final int totalResults;
-  final List<NewsModel> articles;
+  final List<NewsModel> results;
+  final String? nextPage;
 
   GetNewsResponseEntity({
     required this.status,
     required this.totalResults,
-    required this.articles,
+    required this.results,
+    this.nextPage,
   });
 
   factory GetNewsResponseEntity.fromJson(Map<String, dynamic> json) {
     return GetNewsResponseEntity(
-      status: json['status'],
-      totalResults: json['totalResults'],
-      articles: (json['articles'] as List).map((articleJson) => NewsModel.fromJson(articleJson)).toList(),
+      status: json['status'] as String,
+      totalResults: json['totalResults'] as int,
+      results:
+          (json['results'] as List<dynamic>).map((item) => NewsModel.fromJson(item as Map<String, dynamic>)).toList(),
+      nextPage: json['nextPage'] as String?,
     );
   }
 
@@ -95,7 +160,8 @@ class GetNewsResponseEntity {
     return {
       'status': status,
       'totalResults': totalResults,
-      'articles': articles.map((article) => article.toJson()).toList(),
+      'results': results.map((news) => news.toJson()).toList(),
+      'nextPage': nextPage,
     };
   }
 }

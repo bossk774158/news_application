@@ -5,7 +5,7 @@ import 'package:news_application/features/news/repository/news_model.dart';
 class NewsList extends StatelessWidget {
   final List<NewsModel> newsList;
 
-  const NewsList({required this.newsList, Key? key}) : super(key: key);
+  const NewsList({required this.newsList, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class NewsList extends StatelessWidget {
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: NewsCard(news: newsList[index]),
+              child: NewsCard(newsList: newsList, currentIndex: index),
             );
           },
         ),
