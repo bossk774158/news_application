@@ -16,7 +16,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
 
   void _getTakenBookingSlots(GetNewsEvent event, Emitter<NewsState> emit) async {
     emit(NewsLoadingState());
-    final Either<GetNewsResponseModel, Error> result = await _getNewsUseCase();
+    final Either<GetNewsResponseModel, Error> result = await _getNewsUseCase(params: event.topic);
     emit(result.fold((l) => SuccessGetNewsState(entity: l.entity),
         (error) => ErrorGetNewsState(message: error.toString(), statusCode: 400)));
   }
