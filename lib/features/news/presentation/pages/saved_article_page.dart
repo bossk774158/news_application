@@ -3,12 +3,31 @@ import 'package:hive/hive.dart';
 import 'package:news_application/features/news/repository/news_model.dart';
 import 'package:news_application/features/news/presentation/pages/full_article_page.dart';
 
-class SavedArticlesPage extends StatelessWidget {
-  const SavedArticlesPage({Key? key}) : super(key: key);
+class SavedArticlesPage extends StatefulWidget {
+  const SavedArticlesPage({super.key});
+
+  @override
+  _SavedArticlesPageState createState() => _SavedArticlesPageState();
+}
+
+class _SavedArticlesPageState extends State<SavedArticlesPage> with RouteAware {
+  late Future<List<NewsModel>> _savedArticlesFuture;
 
   Future<List<NewsModel>> _getSavedArticles() async {
     final box = await Hive.openBox<NewsModel>('saved_articles');
     return box.values.toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _savedArticlesFuture = _getSavedArticles();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _savedArticlesFuture = _getSavedArticles(); // Refresh the data when the page is accessed
   }
 
   @override
@@ -18,7 +37,7 @@ class SavedArticlesPage extends StatelessWidget {
         title: Text('Saved Articles'),
       ),
       body: FutureBuilder<List<NewsModel>>(
-        future: _getSavedArticles(),
+        future: _savedArticlesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -34,7 +53,7 @@ class SavedArticlesPage extends StatelessWidget {
                 final article = savedArticles[index];
                 return ListTile(
                   title: Text(article.title),
-                  subtitle: Text(article.sourceName ?? 'Source Name'),
+                  subtitle: Text(article.sourceName ?? "Source Name"),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -44,7 +63,11 @@ class SavedArticlesPage extends StatelessWidget {
                           currentIndex: index,
                         ),
                       ),
-                    );
+                    ).then((_) {
+                      setState(() {
+                        _savedArticlesFuture = _getSavedArticles();
+                      });
+                    });
                   },
                 );
               },
