@@ -10,6 +10,20 @@ class TextStyles {
     fontSize: 18,
   );
 
+  static const header24 = TextStyle(
+    fontFamily: 'NotoSansThai',
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    fontSize: 24,
+  );
+
+  static const body16 = TextStyle(
+    fontFamily: 'NotoSansThai',
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w300,
+    fontSize: 16,
+  );
+
   static const body14 = TextStyle(
     fontFamily: 'NotoSansThai',
     fontStyle: FontStyle.normal,

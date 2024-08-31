@@ -9,13 +9,12 @@ abstract class NewsDataSource {
 }
 
 class NewsDataSourceImpl implements NewsDataSource {
-  static const _baseUrl = "https://newsapi.org/v2/";
-  static const _apiKey = "c441f5a3edb24ae1ac9b834ebf32d771";
+  static const _baseUrl = "https://newsdata.io/api/1/latest";
+  static const _apiKey = "pub_52213c64873d4d1e7f4aff5dbe027f38f4c6f";
 
   @override
   Future<Either<GetNewsResponseModel, Error>> getNews() async {
-    const endpoint = 'top-headlines?country=us';
-    final url = Uri.parse('$_baseUrl$endpoint&apiKey=$_apiKey');
+    final url = Uri.parse('$_baseUrl?apikey=$_apiKey&domain=bbc&language=en');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
