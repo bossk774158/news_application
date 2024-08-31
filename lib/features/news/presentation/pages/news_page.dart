@@ -37,7 +37,7 @@ class _NewsPageState extends State<NewsPage> {
       child: Row(
         children: topics.map((topic) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: ChoiceChip(
               label: Text(topic.toUpperCase()),
               selected: selectedTopic == topic,
