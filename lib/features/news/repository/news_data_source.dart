@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:news_application/features/news/repository/news_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,11 +10,12 @@ abstract class NewsDataSource {
 
 class NewsDataSourceImpl implements NewsDataSource {
   static const _baseUrl = "https://newsdata.io/api/1/latest";
-  static const _apiKey = "pub_52213c64873d4d1e7f4aff5dbe027f38f4c6f";
+  String apiKey = dotenv.env['GOOGLE_NEWS_API_KEY']!;
 
   @override
   Future<Either<GetNewsResponseModel, Error>> getNews(String? topic) async {
-    String url = '$_baseUrl?apikey=$_apiKey&domain=bbc&language=en';
+    print(apiKey);
+    String url = '$_baseUrl?apikey=$apiKey&domain=bbc&language=en';
 
     if (topic != null && topic.isNotEmpty) {
       url += '&category=$topic';

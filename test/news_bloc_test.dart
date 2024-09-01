@@ -68,7 +68,6 @@ void main() {
   blocTest<NewsBloc, NewsState>(
     'emits [NewsLoadingState, ErrorGetNewsState] when GetNewsEvent is added and fetching fails',
     build: () {
-      // Mock the use case to return an error with a specific message and status code
       when(mockGetNewsUseCase.call(params: 'business')).thenAnswer(
         (_) async => Right(Error()),
       );
@@ -77,7 +76,6 @@ void main() {
     act: (bloc) => bloc.add(GetNewsEvent(topic: 'business')),
     expect: () => [
       NewsLoadingState(),
-      // Adjust this to match the expected actual state
       ErrorGetNewsState(message: 'Instance of \'Error\'', statusCode: 400),
     ],
   );

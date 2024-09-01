@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:news_application/features/news/presentation/pages/news_page.dart';
 import 'package:news_application/features/news/repository/news_model.dart';
@@ -11,6 +12,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(NewsModelAdapter());
   initModule();
+  await dotenv.load(fileName: "assets/.env");
   runApp(MyApp());
 }
 
