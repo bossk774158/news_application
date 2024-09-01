@@ -16,13 +16,44 @@ class NewsPage extends StatefulWidget {
 class _NewsPageState extends State<NewsPage> {
   late NewsBloc _bloc;
   bool isLoading = false;
+  String selectedTopic = "LATEST";
+
+  final List<String> topics = ["LATEST", "business", "education", "politics", "health", "technology"];
 
   @override
   void initState() {
     _bloc = BlocProvider.of<NewsBloc>(context);
-    _bloc.add(GetNewsEvent());
-
+    _fetchNews();
     super.initState();
+  }
+
+  void _fetchNews() {
+    _bloc.add(GetNewsEvent(topic: selectedTopic == "LATEST" ? null : selectedTopic));
+  }
+
+  Widget renderTopicChips() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: topics.map((topic) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: ChoiceChip(
+              label: Text(topic.toUpperCase()),
+              selected: selectedTopic == topic,
+              onSelected: (bool selected) {
+                if (selected) {
+                  setState(() {
+                    selectedTopic = topic;
+                    _fetchNews();
+                  });
+                }
+              },
+            ),
+          );
+        }).toList(),
+      ),
+    );
   }
 
   Widget renderNews() {
@@ -79,7 +110,12 @@ class _NewsPageState extends State<NewsPage> {
           ),
         ],
       ),
-      body: renderNews(),
+      body: Column(
+        children: [
+          renderTopicChips(),
+          Expanded(child: renderNews()),
+        ],
+      ),
     );
   }
 }

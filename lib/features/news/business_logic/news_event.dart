@@ -1,5 +1,6 @@
 abstract class NewsEvent {}
 
 class GetNewsEvent extends NewsEvent {
-  GetNewsEvent();
+  String? topic;
+  GetNewsEvent({this.topic});
 }
