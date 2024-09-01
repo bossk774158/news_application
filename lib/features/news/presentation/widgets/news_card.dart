@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_application/features/news/repository/news_model.dart';
 import 'package:news_application/features/news/presentation/pages/full_article_page.dart';
+import 'package:news_application/utility/helper.dart';
 import 'package:news_application/utility/text_style.dart';
 
 class NewsCard extends StatelessWidget {
@@ -50,7 +51,7 @@ class NewsCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(news.sourceName ?? 'Source Name', style: TextStyles.body14),
                 const SizedBox(height: 8),
-                Text(news.pubDate.toLocal().toString(), style: TextStyles.bodyGrey14),
+                Text(getDateFormat(news.pubDate), style: TextStyles.body14),
                 const SizedBox(height: 16),
                 Text(news.description.isNotEmpty ? news.description : "No description available.",
                     maxLines: 3, overflow: TextOverflow.ellipsis, style: TextStyles.body14),
