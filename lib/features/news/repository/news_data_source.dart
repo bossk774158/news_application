@@ -4,6 +4,16 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:news_application/features/news/repository/news_model.dart';
 import 'package:http/http.dart' as http;
 
+class FetchDataError extends Error {
+  final String message;
+  final int statusCode;
+
+  FetchDataError(this.message, this.statusCode);
+
+  @override
+  String toString() => 'FetchDataError: $message (Status Code: $statusCode)';
+}
+
 abstract class NewsDataSource {
   Future<Either<GetNewsResponseModel, Error>> getNews(String? topic);
 }
@@ -27,8 +37,7 @@ class NewsDataSourceImpl implements NewsDataSource {
       final newsResponse = GetNewsResponseModel.fromJson(jsonResponse);
       return Left(newsResponse);
     } else {
-      print('Failed to fetch news. Status code: ${response.statusCode}');
-      return Right(response as Error);
+      return Right(FetchDataError('Failed to fetch news', response.statusCode));
     }
   }
 }

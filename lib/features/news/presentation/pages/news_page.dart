@@ -83,7 +83,7 @@ class _NewsPageState extends State<NewsPage> {
         } else if (state is SuccessGetNewsState) {
           return NewsList(newsList: state.entity.results);
         } else if (state is ErrorGetNewsState) {
-          return const Center(child: Text('Failed to load news'));
+          return Center(child: Text('Failed to load news: ${state.message}'));
         } else {
           return Container();
         }

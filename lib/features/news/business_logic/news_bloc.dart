@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:news_application/features/news/business_logic/news_event.dart';
 import 'package:news_application/features/news/business_logic/news_state.dart';
+import 'package:news_application/features/news/repository/news_data_source.dart';
 import 'package:news_application/features/news/repository/news_model.dart';
 import 'package:news_application/features/news/repository/news_usecase.dart';
 
@@ -17,7 +18,13 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   void _getTakenBookingSlots(GetNewsEvent event, Emitter<NewsState> emit) async {
     emit(NewsLoadingState());
     final Either<GetNewsResponseModel, Error> result = await _getNewsUseCase(params: event.topic);
-    emit(result.fold((l) => SuccessGetNewsState(entity: l.entity),
-        (error) => ErrorGetNewsState(message: error.toString(), statusCode: 400)));
+    emit(result.fold(
+      (l) => SuccessGetNewsState(entity: l.entity),
+      (error) {
+        final errorMessage = error is FetchDataError ? error.message : 'An unexpected error occurred';
+        final statusCode = error is FetchDataError ? error.statusCode : 500;
+        return ErrorGetNewsState(message: errorMessage, statusCode: statusCode);
+      },
+    ));
   }
 }
