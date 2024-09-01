@@ -95,7 +95,7 @@ class _NewsPageState extends State<NewsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('News App'),
+        title: Text('News'),
         actions: [
           IconButton(
             icon: Icon(Icons.bookmarks),
