@@ -14,7 +14,6 @@ class NewsDataSourceImpl implements NewsDataSource {
 
   @override
   Future<Either<GetNewsResponseModel, Error>> getNews(String? topic) async {
-    print(apiKey);
     String url = '$_baseUrl?apikey=$apiKey&domain=bbc&language=en';
 
     if (topic != null && topic.isNotEmpty) {
@@ -27,9 +26,6 @@ class NewsDataSourceImpl implements NewsDataSource {
       final jsonResponse = json.decode(response.body);
       final newsResponse = GetNewsResponseModel.fromJson(jsonResponse);
       return Left(newsResponse);
-    } else if (response.statusCode == 429) {
-      print('API limit exceeded. Please try again later.');
-      return Right(response as Error);
     } else {
       print('Failed to fetch news. Status code: ${response.statusCode}');
       return Right(response as Error);
