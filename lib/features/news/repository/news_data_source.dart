@@ -29,10 +29,10 @@ class NewsDataSourceImpl implements NewsDataSource {
       return Left(newsResponse);
     } else if (response.statusCode == 429) {
       print('API limit exceeded. Please try again later.');
-      return Right(Error());
+      return Right(response as Error);
     } else {
       print('Failed to fetch news. Status code: ${response.statusCode}');
-      return Right(Error());
+      return Right(response as Error);
     }
   }
 }

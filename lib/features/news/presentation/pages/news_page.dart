@@ -18,7 +18,7 @@ class _NewsPageState extends State<NewsPage> {
   bool isLoading = false;
   String selectedTopic = "LATEST";
 
-  final List<String> topics = ["LATEST", "business", "education", "politics", "health", "technology"];
+  final List<String> topics = ["LATEST", "business", "entertainment", "politics", "health", "technology"];
 
   @override
   void initState() {

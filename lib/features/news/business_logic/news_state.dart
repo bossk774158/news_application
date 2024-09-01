@@ -5,10 +5,9 @@ abstract class NewsState {}
 
 class NewsInitial extends NewsState {}
 
-// Example state implementing Equatable
 class NewsLoadingState extends NewsState with EquatableMixin {
   @override
-  List<Object?> get props => []; // List all properties that should be compared
+  List<Object?> get props => [];
 }
 
 class SuccessGetNewsState extends NewsState with EquatableMixin {
@@ -17,7 +16,7 @@ class SuccessGetNewsState extends NewsState with EquatableMixin {
   SuccessGetNewsState({required this.entity});
 
   @override
-  List<Object?> get props => [entity]; // Include the entity in comparison
+  List<Object?> get props => [entity];
 }
 
 class ErrorGetNewsState extends NewsState with EquatableMixin {
@@ -27,5 +26,5 @@ class ErrorGetNewsState extends NewsState with EquatableMixin {
   ErrorGetNewsState({required this.message, required this.statusCode});
 
   @override
-  List<Object?> get props => [message, statusCode]; // Include message and status code
+  List<Object?> get props => [message, statusCode];
 }
