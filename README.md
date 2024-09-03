@@ -1,3 +1,19 @@
 # news_application
 
-A new Flutter project.
+## Installation
+
+```bash
+$ flutter pub get
+```
+
+## Running the app
+
+```bash
+$ flutter run
+```
+
+## Test
+
+```bash
+$ flutter test
+```
